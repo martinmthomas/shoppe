@@ -15,7 +15,7 @@ namespace Shoppe.Api.Controllers
 
         /// <summary>
         /// A custom error handling route to log all unhandled exceptions. This is hooked to the 
-        /// builtin exception handler. See <see cref="Program"/>.
+        /// builtin exception handler. See UseExceptionHandler in <see cref="Program"/>.
         /// </summary>
         /// <returns></returns>
         [Route("/error")]

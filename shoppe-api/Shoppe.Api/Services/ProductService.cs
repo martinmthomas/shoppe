@@ -9,6 +9,12 @@ namespace Shoppe.Api.Services
         /// Gets all products and their details.
         /// </summary>
         IEnumerable<Product> GetAll();
+
+        /// <summary>
+        /// Updates products availability.
+        /// </summary>
+        /// <param name="latestProducts"></param>
+        void UpdateProductsAvailability(IEnumerable<Product> latestProducts);
     }
 
     public class ProductService : IProductService
@@ -23,6 +29,11 @@ namespace Shoppe.Api.Services
         public IEnumerable<Product> GetAll()
         {
             return _productRepository.GetAll();
+        }
+
+        public void UpdateProductsAvailability(IEnumerable<Product> latestProducts)
+        {
+            _productRepository.UpdateProductsAvailability(latestProducts);
         }
     }
 }

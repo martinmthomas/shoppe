@@ -46,9 +46,9 @@ namespace Shoppe.Api.UnitTest.Repositories
             // Arrange
             var userId = Guid.NewGuid();
             IEnumerable<Product> expectedProducts = Enumerable.Empty<Product>()
-                .Append(new Product("biscuit", "Biscuit 500g", "biscuit.jpg", 4.5f, 1))
-                .Append(new Product("bread", "Bread 750g", "bread.jpg", 5.0f, 1))
-                .Append(new Product("bun", "Buns 4 Pack", "brioche_burger_bun.jpg", 6.0f, 2));
+                .Append(new Product("biscuit", "Biscuit 500g", "biscuit.jpg", 4.5f, 100, 1))
+                .Append(new Product("bread", "Bread 750g", "bread.jpg", 5.0f, 100, 1))
+                .Append(new Product("bun", "Buns 4 Pack", "brioche_burger_bun.jpg", 6.0f, 100, 2));
 
             var cacheMock = new MockMemoryCache();
             cacheMock.SetupTryGetValue(userId, expectedProducts, true);
@@ -63,42 +63,42 @@ namespace Shoppe.Api.UnitTest.Repositories
             Assert.Equal(10, cart.ShippingCost);
             Assert.Equal(21.5, cart.Total);
         }
-    }
 
-    public class MockMemoryCache : IMemoryCache
-    {
-        private object _expKey;
-        private object _expValue;
-        private bool _expTryGetValueReturn;
-
-        public void SetupTryGetValue(object expKey, object expValue, bool expReturn)
+        private class MockMemoryCache : IMemoryCache
         {
-            _expKey = expKey;
-            _expValue = expValue;
-            _expTryGetValueReturn = expReturn;
-        }
+            private object _expKey;
+            private object _expValue;
+            private bool _expTryGetValueReturn;
 
-        public bool TryGetValue(object key, out object value)
-        {
-            Assert.Equal(_expKey, key);
+            public void SetupTryGetValue(object expKey, object expValue, bool expReturn)
+            {
+                _expKey = expKey;
+                _expValue = expValue;
+                _expTryGetValueReturn = expReturn;
+            }
 
-            value = _expValue;
-            return _expTryGetValueReturn;
-        }
+            public bool TryGetValue(object key, out object value)
+            {
+                Assert.Equal(_expKey, key);
 
-        public ICacheEntry CreateEntry(object key)
-        {
-            throw new NotImplementedException();
-        }
+                value = _expValue;
+                return _expTryGetValueReturn;
+            }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
+            public ICacheEntry CreateEntry(object key)
+            {
+                throw new NotImplementedException();
+            }
 
-        public void Remove(object key)
-        {
-            throw new NotImplementedException();
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Remove(object key)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ describe('OrderService', () => {
 
   it('placeOrder should clear cart once done', () => {
     const productsToBuy: Product[] = [
-      { code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, quantity: 1 }
+      { code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, maxAvailable: 100, quantity: 1 }
     ]
 
     const httpSpy = spyOn(httpClient, 'post').and.returnValue(of({}));

@@ -27,12 +27,16 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.product.quantity ??= 0;
-    
+
     this.countryService.onCountryUpdated()
       .subscribe(country => this.countryUpdated(country))
   }
 
   update() {
+    this.product.quantity = this.product.quantity! > this.product.maxAvailable
+      ? this.product.maxAvailable
+      : this.product.quantity;
+
     this.productService.updateProduct(this.product);
   }
 

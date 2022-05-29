@@ -53,6 +53,18 @@ describe('ProductComponent', () => {
     expect(productServiceSpy).toHaveBeenCalledWith({ code: 'abc', quantity: 33 } as Product);
   });
 
+  it('update should reset quantity if it is above maxAvailable', () => {
+    const productServiceSpy = spyOn(productService, 'updateProduct');
+
+    component.product.code = 'abc'
+    component.product.quantity = 33;
+    component.product.maxAvailable = 30
+
+    component.update();
+
+    expect(productServiceSpy).toHaveBeenCalledWith({ code: 'abc', quantity: 30, maxAvailable: 30 } as Product);
+  });
+
   it('remove should update product details in product service', () => {
     const productServiceSpy = spyOn(productService, 'updateProduct');
 

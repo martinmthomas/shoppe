@@ -8,7 +8,7 @@
 
     <div class="row">
         <div class="col pe-0">
-            <input type="number" min="0" class="form-control"
+            <input type="number" min="0" max="{{product.maxAvailable}}" class="form-control"
                 [(ngModel)]="product.quantity" (ngModelChange)="update()">
         </div>
         <div class="col">
@@ -16,6 +16,10 @@
                 [disabled]="product.quantity === 0" (click)="update()"
                 value="Add to cart">
         </div>
+    </div>
+
+    <div class="unavailable" *ngIf="product.maxAvailable <= 0">
+        <span>Product unavailable</span>
     </div>
 </div>
 
@@ -25,7 +29,7 @@
 
     <div class="price">{{priceFormatted}}</div>
 
-    <input type="number" min="0" class="form-control count"
+    <input type="number" min="0" max="{{product.maxAvailable}}" class="form-control count"
         [(ngModel)]="product.quantity" (ngModelChange)="update()">
 
     <button class="btn btn-close p-3 my-auto" (click)="remove()" title="Remove item from cart"></button>

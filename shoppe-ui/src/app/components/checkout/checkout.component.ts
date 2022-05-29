@@ -45,7 +45,10 @@ export class CheckoutComponent implements OnInit {
           relativeTo: this.route,
           queryParams: { orderId: result.orderId }
         });
-      });
+      },
+        err => {
+          this.router.navigate(['']);
+        });
   }
 
   private countryUpdated(country: Country) {

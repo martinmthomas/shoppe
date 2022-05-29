@@ -38,11 +38,11 @@ describe('ProductListComponent', () => {
 
   it('should get products and show non-zero quantity for any products that were already in cart', () => {
     const productList: Product[] = [
-      { code: 'biscuit', description: 'Biscuit', imageUrl: 'url', price: 5.5, quantity: 0 },
-      { code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, quantity: 0 }
+      { code: 'biscuit', description: 'Biscuit', imageUrl: 'url', price: 5.5, maxAvailable: 100, quantity: 0 },
+      { code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, maxAvailable: 100, quantity: 0 }
     ];
     const cart: Cart = {
-      products: [{ code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, quantity: 3 }],
+      products: [{ code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, maxAvailable: 100, quantity: 3 }],
       shippingCost: 10,
       total: 1.5
     };

@@ -1,4 +1,5 @@
 .product {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 220px;
@@ -7,6 +8,24 @@
     box-shadow: 1px 1px 5px 0px #a7a7a7;
     border-radius: 4px;
     padding: 10px 15px;
+
+    .unavailable {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+        background-color: #a7a7a7;
+        border-radius: 3px;
+        opacity: 0.8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        font-weight: bold;
+        color: #9f2727;
+    }
 }
 
 .picture {
