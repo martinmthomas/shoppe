@@ -1,0 +1,32 @@
+<div class="product" *ngIf="!isLineView">
+    <img class="picture" src="{{product.imageUrl}}"
+        alt="{{product.description}}">
+
+    <div class="description">{{product.description}}</div>
+
+    <div class="price">{{product.price | amount : currencySym : fxRate}}</div>
+
+    <div class="row">
+        <div class="col pe-0">
+            <input type="number" min="0" class="form-control"
+                [(ngModel)]="product.quantity" (ngModelChange)="update()">
+        </div>
+        <div class="col">
+            <input type="button" class="cta btn btn-primary form-control"
+                [disabled]="product.quantity === 0" (click)="update()"
+                value="Add to cart">
+        </div>
+    </div>
+</div>
+
+<div class="product-line" *ngIf="isLineView">
+
+    <div class="description">{{product.description}}</div>
+
+    <div class="price">{{priceFormatted}}</div>
+
+    <input type="number" min="0" class="form-control count"
+        [(ngModel)]="product.quantity" (ngModelChange)="update()">
+
+    <button class="btn btn-close p-3 my-auto" (click)="remove()" title="Remove item from cart"></button>
+</div>

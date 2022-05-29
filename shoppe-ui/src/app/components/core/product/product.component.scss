@@ -1,0 +1,60 @@
+.product {
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    margin: 15px;
+
+    box-shadow: 1px 1px 5px 0px #a7a7a7;
+    border-radius: 4px;
+    padding: 10px 15px;
+}
+
+.picture {
+    width: 150px;
+    height: 150px;
+}
+
+.description {
+    height: 50px;
+    font-weight: bold;
+
+    margin: 10px 0px;
+}
+
+.price {
+    font-size: 1.5rem;
+    font-weight: bold;
+
+    margin-bottom: 15px;
+}
+
+.picture {
+    margin: auto;
+}
+
+.cta {
+    width: 100%;
+}
+
+/* Style specification for displaying product details in a single line */
+.product-line {
+    display: flex;
+    width: 100%;
+    padding: 15px;
+
+    box-shadow: 0px 2px 2px #c8c8c8;
+
+    .description {
+        display: flex;
+        align-items: center;
+        width: 300px;
+    }
+
+    .price,
+    .quantity {
+        width: 100px;
+        margin: auto 0px auto 10px;
+
+        font-size: 1rem;
+    }
+}

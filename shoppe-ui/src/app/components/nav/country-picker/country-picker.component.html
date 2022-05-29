@@ -1,0 +1,15 @@
+<div class="d-flex justify-content-end country-picker">
+    <div class="dropdown">
+        <button class="btn btn-secondary-outline dropdown-toggle" type="button"
+            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            {{selectedCountry ? selectedCountry.name : 'Select Country'}}
+        </button>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item" type="button"
+                *ngFor="let country of countries"
+                (click)="selectCountry(country)">{{country.name}}</button>
+        </div>
+    </div>
+</div>

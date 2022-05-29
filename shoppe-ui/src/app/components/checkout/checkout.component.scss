@@ -1,0 +1,16 @@
+.product-list {
+    min-width: 50%;
+    padding: 35px 0px;
+}
+
+.cost-pane {
+    margin-left: 20px;
+    padding: 35px 20px;
+
+    border-left: 2px solid;
+
+    .line-item {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+}

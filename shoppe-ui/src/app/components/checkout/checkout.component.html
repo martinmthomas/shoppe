@@ -1,0 +1,30 @@
+<a [routerLink]="''" class="btn btn-outline-secondary ms-3 mt-3">Continue
+    Shopping</a>
+
+<div class="d-flex ms-3 mt-3">
+    <div class="product-list">
+        <div *ngIf="isCartEmpty">No items in cart.</div>
+
+        <product *ngFor="let product of cart.products" [product]="product"
+            [isLineView]="true">
+        </product>
+    </div>
+
+    <div class="cost-pane d-flex flex-column">
+        <div class="line-item">
+            <span>Shipping Cost:</span>
+            <span class="ms-2">{{cart.shippingCost | amount :currencySym
+                :fxRate}}</span>
+        </div>
+        <div class="line-item">
+            <span>Total:</span>
+            <span class="ms-2">{{cart.total | amount :currencySym
+                :fxRate}}</span>
+        </div>
+    </div>
+</div>
+
+<div class="ms-3 mt-5">
+    <button class="btn btn-primary" [disabled]="isCartEmpty"
+        (click)="placeOrder()">Place Order</button>
+</div>
