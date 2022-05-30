@@ -46,7 +46,7 @@ namespace Shoppe.Api.Repositories
                 return new Cart { Products = products };
             }
 
-            _logger.LogInformation($"Cart does not exist for user {userId}. So, creating a new one.");
+            _logger.LogInformation($"Cart does not exist for user {userId}. So, returning an empty one.");
 
             return new Cart();
         }
