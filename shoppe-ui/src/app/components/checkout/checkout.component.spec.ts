@@ -3,7 +3,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
+import { Country } from 'src/app/models/country';
 import { AmountPipe } from 'src/app/pipes/amount.pipe';
+import { CountryService } from 'src/app/services/country.service';
 import { OrderService } from 'src/app/services/order.service';
 
 import { CheckoutComponent } from './checkout.component';
@@ -27,11 +29,14 @@ describe('CheckoutComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CheckoutComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-
     orderService = TestBed.inject(OrderService);
     router = TestBed.inject(Router);
+    
+    const countryService = TestBed.inject(CountryService);
+    spyOn(countryService, 'onCountryUpdated').and.returnValue(of({ code: 'au', currencySym: '$', fxRate: 1 } as Country));
+    
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('placeOrder should redirect to Thank You page', () => {
