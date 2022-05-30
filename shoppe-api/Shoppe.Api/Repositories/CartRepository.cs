@@ -10,21 +10,19 @@ namespace Shoppe.Api.Repositories
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Cart Get(Guid userId);
+        Cart Get(string userId);
 
         /// <summary>
         /// Saves selected products in an "Inmemory implementation of Cart" for the given userId.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="products"></param>
         /// <returns></returns>
-        Cart Save(Guid userId, IEnumerable<Product> products);
+        Cart Save(CartUpdateRequest request);
 
         /// <summary>
         /// Clears user's Cart.
         /// </summary>
         /// <param name="userId"></param>
-        void Clear(Guid userId);
+        void Clear(string userId);
     }
 
     public class CartRepository : ICartRepository
@@ -41,9 +39,9 @@ namespace Shoppe.Api.Repositories
             _logger = logger;
         }
 
-        public Cart Get(Guid userId)
+        public Cart Get(string userId)
         {
-            if (_cache.TryGetValue<IEnumerable<Product>>(userId, out var products))
+            if (_cache.TryGetValue<IEnumerable<ProductSlim>>(userId, out var products))
             {
                 return new Cart { Products = products };
             }
@@ -53,13 +51,13 @@ namespace Shoppe.Api.Repositories
             return new Cart();
         }
 
-        public Cart Save(Guid userId, IEnumerable<Product> products)
+        public Cart Save(CartUpdateRequest request)
         {
-            _cache.Set(userId, products);
-            return new Cart { Products = products };
+            _cache.Set(request.UserId, request.Products);
+            return new Cart { Products = request.Products };
         }
 
-        public void Clear(Guid userId)
+        public void Clear(string userId)
         {
             _cache.Remove(userId);
         }

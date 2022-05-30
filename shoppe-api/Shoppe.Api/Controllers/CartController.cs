@@ -21,7 +21,7 @@ namespace Shoppe.Api.Controllers
         /// <param name="userId">User Id</param>
         /// <returns></returns>
         [HttpGet("{userId}")]
-        public IActionResult Get(Guid userId)
+        public IActionResult Get(string userId)
         {
             return Ok(_cartService.Get(userId));
         }
@@ -29,14 +29,13 @@ namespace Shoppe.Api.Controllers
         /// <summary>
         /// Updates user's cart.
         /// </summary>
-        /// <param name="userId">User Id</param>
-        /// <param name="products">Full list of products that form the Cart.</param>
+        /// <param name="request"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        [HttpPost("{userId}")]
-        public IActionResult Save([FromRoute] Guid userId, [FromBody] IEnumerable<Product> products)
+        [HttpPost()]
+        public IActionResult Save(CartUpdateRequest request)
         {
-            var cart = _cartService.Save(userId, products);
+            var cart = _cartService.Save(request);
             return Ok(cart);
         }
     }

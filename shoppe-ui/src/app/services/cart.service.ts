@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Cart } from '../models/cart';
-import { Product } from '../models/product';
+import { Cart, CartUpdateRequest } from '../models/cart';
+import { Product, ProductSlim } from '../models/product';
 import { ProductService } from './product.service';
 import { UserService } from './user.service';
 
@@ -79,18 +79,28 @@ export class CartService {
       this.removeProductFromCart(product);
     }
 
-    this.http.post<Cart>(`${this.baseUrl}/cart/${this.userId}`, this.cart.products)
+    this.saveCart();
+  }
+
+  private saveCart() {
+    const request: CartUpdateRequest = {
+      userId: this.userId,
+      products: this.cart.products
+    };
+
+    this.http.post<Cart>(`${this.baseUrl}/cart`, request)
       .subscribe(updatedCart => this.setCart(updatedCart));
   }
 
   private updateProductInCart(product: Product) {
     let index = this.cart.products.findIndex(p => p.code == product.code);
 
+    let productToUpdate = this.convertToProductSlim(product);
     if (index >= 0) {
-      this.cart.products[index] = product;
+      this.cart.products[index] = productToUpdate;
     }
     else {
-      this.cart.products.push(product);
+      this.cart.products.push(productToUpdate);
     }
   }
 
@@ -100,5 +110,16 @@ export class CartService {
     if (index >= 0) {
       this.cart.products.splice(index, 1);
     }
+  }
+
+  private convertToProductSlim(product: Product) {
+    const productSlim: ProductSlim = {
+      code: product.code,
+      maxAvailable: product.maxAvailable,
+      price: product.price,
+      quantity: product.quantity
+    };
+
+    return productSlim;
   }
 }

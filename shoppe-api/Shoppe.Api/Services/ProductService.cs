@@ -14,7 +14,7 @@ namespace Shoppe.Api.Services
         /// Updates products availability.
         /// </summary>
         /// <param name="latestProducts"></param>
-        void UpdateProductsAvailability(IEnumerable<Product> latestProducts);
+        void UpdateProductsAvailability(IEnumerable<ProductSlim> latestProducts);
     }
 
     public class ProductService : IProductService
@@ -31,7 +31,7 @@ namespace Shoppe.Api.Services
             return _productRepository.GetAll();
         }
 
-        public void UpdateProductsAvailability(IEnumerable<Product> latestProducts)
+        public void UpdateProductsAvailability(IEnumerable<ProductSlim> latestProducts)
         {
             _productRepository.UpdateProductsAvailability(latestProducts);
         }

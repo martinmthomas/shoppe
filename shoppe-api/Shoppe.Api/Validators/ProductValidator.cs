@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using Shoppe.Api.Models;
 
-namespace Shoppe.Api.Models.Validators
+namespace Shoppe.Api.Validators
 {
     public class ProductValidator : AbstractValidator<Product>
     {
@@ -20,7 +21,7 @@ namespace Shoppe.Api.Models.Validators
     {
         public ProductsValidator()
         {
-            RuleForEach(products => products).SetValidator(new ProductValidator());
+            RuleForEach(products => products).NotEmpty().SetValidator(new ProductValidator());
         }
     }
 }

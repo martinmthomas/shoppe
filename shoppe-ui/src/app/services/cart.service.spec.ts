@@ -26,7 +26,7 @@ describe('CartService', () => {
 
   // sets up a cart object to be returned when the http call is made.
   const expectedCart: Cart = {
-    products: [{ code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, maxAvailable: 100, quantity: 1 }],
+    products: [{ code: 'milk', price: 1.5, maxAvailable: 100, quantity: 1 }],
     shippingCost: 0,
     total: 1.5
   };

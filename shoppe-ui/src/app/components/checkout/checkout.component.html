@@ -5,7 +5,7 @@
     <div class="product-list">
         <div *ngIf="isCartEmpty">No items in cart.</div>
 
-        <product *ngFor="let product of cart.products" [product]="product"
+        <product *ngFor="let product of cartProducts" [product]="product"
             [isLineView]="true">
         </product>
     </div>

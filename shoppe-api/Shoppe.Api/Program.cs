@@ -1,8 +1,9 @@
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Shoppe.Api.Models.Configs;
-using Shoppe.Api.Models.Validators;
 using Shoppe.Api.Repositories;
 using Shoppe.Api.Services;
+using Shoppe.Api.Validators;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,7 @@ builder.Services.AddOptions<CoreSettings>()
 builder.Services.AddMemoryCache();
 
 // Adds all Validators to evaluate the incoming requests.
+builder.Services.AddFluentValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<ProductValidator>();
 
 builder.Services.AddSingleton<IProductService, ProductService>();

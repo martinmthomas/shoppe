@@ -6,7 +6,7 @@ namespace Shoppe.Api.Repositories
 
     public interface IOrderRepository
     {
-        Guid PlaceOrder(Guid userId, IEnumerable<Product> products);
+        string PlaceOrder(PlaceOrderRequest request);
     }
 
     public class OrderRepository : IOrderRepository
@@ -20,10 +20,11 @@ namespace Shoppe.Api.Repositories
             _cache = cache;
         }
 
-        public Guid PlaceOrder(Guid userId, IEnumerable<Product> products)
+        public string PlaceOrder(PlaceOrderRequest request)
         {
-            var order = new Order(Guid.NewGuid(), userId, products, DateTime.UtcNow);
-            var cacheKey = $"{_orderKey}_{userId}";
+            var order = new Order(request);
+
+            var cacheKey = $"{_orderKey}_{order.UserId}";
 
             if (_cache.TryGetValue<IEnumerable<Order>>(_orderKey, out var orders))
             {

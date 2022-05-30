@@ -1,8 +1,8 @@
 ﻿namespace Shoppe.Api.Models
 {
-    public record Cart
+    public class Cart
     {
-        public IEnumerable<Product> Products { get; init; } = Enumerable.Empty<Product>();
+        public IEnumerable<ProductSlim> Products { get; init; } = Enumerable.Empty<ProductSlim>();
 
         public float Total => Products.Any()
                     ? Products.Select(p => p.Price * p.Quantity).Sum()

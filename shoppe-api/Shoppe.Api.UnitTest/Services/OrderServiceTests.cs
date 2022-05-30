@@ -26,20 +26,20 @@ namespace Shoppe.Api.UnitTest.Services
         public void PlaceOrder_Should_Place_Order()
         {
             // Arrange
-            var userId = Guid.NewGuid();
+            var userId = Guid.NewGuid().ToString();
 
             var mockOrderRepository = new Mock<IOrderRepository>();
-            mockOrderRepository.Setup(o => o.PlaceOrder(It.IsAny<Guid>(), It.IsAny<IEnumerable<Product>>()));
+            mockOrderRepository.Setup(o => o.PlaceOrder(It.IsAny<PlaceOrderRequest>()));
 
             var mockProductService = new Mock<IProductService>();
-            mockProductService.Setup(p => p.UpdateProductsAvailability(It.IsAny<IEnumerable<Product>>()));
+            mockProductService.Setup(p => p.UpdateProductsAvailability(It.IsAny<IEnumerable<ProductSlim>>()));
 
             var mockCartService = new Mock<ICartService>();
-            mockCartService.Setup(c => c.Clear(It.Is<Guid>(u => u == userId)));
+            mockCartService.Setup(c => c.Clear(It.Is<string>(u => u == userId)));
 
             // Act
             var sut = CreateSut(mockCartService.Object, mockProductService.Object, mockOrderRepository.Object);
-            var orderId = sut.PlaceOrder(userId, Enumerable.Empty<Product>());
+            var orderId = sut.PlaceOrder(new PlaceOrderRequest(userId, Enumerable.Empty<ProductSlim>()));
 
             // Assert
             mockOrderRepository.VerifyAll();

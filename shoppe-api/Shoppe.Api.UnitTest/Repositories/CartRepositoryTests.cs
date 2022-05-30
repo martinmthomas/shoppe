@@ -20,10 +20,10 @@ namespace Shoppe.Api.UnitTest.Repositories
         }
 
         [Fact]
-        public void Get_Should_Return_Empty_Cart_When_No_Cart_Data_Can_Be_Found()
+        public void Get_Should_Return_EmptyCart_When_No_Cart_Data_Can_Be_Found()
         {
             // Arrange
-            var userId = Guid.NewGuid();
+            var userId = Guid.NewGuid().ToString();
             IEnumerable<Product> expectedProducts = null;
 
             var cacheMock = new MockMemoryCache();
@@ -41,14 +41,14 @@ namespace Shoppe.Api.UnitTest.Repositories
         }
 
         [Fact]
-        public void Get_Should_Create_Cart_When_Products_Are_Found()
+        public void Get_Should_Return_Cart_When_Products_Are_Found()
         {
             // Arrange
-            var userId = Guid.NewGuid();
-            IEnumerable<Product> expectedProducts = Enumerable.Empty<Product>()
-                .Append(new Product("biscuit", "Biscuit 500g", "biscuit.jpg", 4.5f, 100, 1))
-                .Append(new Product("bread", "Bread 750g", "bread.jpg", 5.0f, 100, 1))
-                .Append(new Product("bun", "Buns 4 Pack", "brioche_burger_bun.jpg", 6.0f, 100, 2));
+            var userId = Guid.NewGuid().ToString();
+            IEnumerable<ProductSlim> expectedProducts = Enumerable.Empty<ProductSlim>()
+                .Append(new ProductSlim("biscuit", 4.5f, 100, 1))
+                .Append(new ProductSlim("bread", 5.0f, 100, 1))
+                .Append(new ProductSlim("bun", 6.0f, 100, 2));
 
             var cacheMock = new MockMemoryCache();
             cacheMock.SetupTryGetValue(userId, expectedProducts, true);

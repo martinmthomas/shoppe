@@ -1,13 +1,13 @@
 ﻿using Shoppe.Api.Models;
-using Shoppe.Api.Models.Validators;
 using Shoppe.Api.Repositories;
+using Shoppe.Api.Validators;
 
 namespace Shoppe.Api.Services
 {
 
     public interface IOrderService
     {
-        Guid PlaceOrder(Guid userId, IEnumerable<Product> products);
+        string PlaceOrder(PlaceOrderRequest request);
     }
 
     public class OrderService : IOrderService
@@ -25,35 +25,45 @@ namespace Shoppe.Api.Services
             _orderRepository = orderRepository;
         }
 
-        public Guid PlaceOrder(Guid userId, IEnumerable<Product> products)
+        public string PlaceOrder(PlaceOrderRequest request)
         {
-            var productList = _productService.GetAll();
-
-            // Updates MaxAvailable value in the request, based on latest list.
-            var updatedProducts = Enumerable.Empty<Product>();
-            foreach (var product in products)
-            {
-                var latestProduct = productList.First(p => p.Code == product.Code);
-                updatedProducts = updatedProducts.Append(new Product(product.Code, product.Description, product.ImageUrl, product.Price, latestProduct.MaxAvailable, product.Quantity));
-            }
-
-            // Validates the request model using custom validator.
-            var productsValidator = new ProductsValidator();
-            var validationResult = productsValidator.Validate(updatedProducts);
-            if (!validationResult.IsValid)
-                throw new ArgumentException(validationResult.ToString("~"));
+            var updatedProducts = ValidateUsingLatestProductData(request.Products);
 
             // Saves order, updates product list and clears the cart.
-            var orderId = _orderRepository.PlaceOrder(userId, updatedProducts);
-            _logger.LogInformation($"Order {orderId} placed successfully for user {userId}");
+            var updatedRequest = new PlaceOrderRequest(request.UserId, updatedProducts);
+            var orderId = _orderRepository.PlaceOrder(updatedRequest);
+            _logger.LogInformation($"Order {orderId} placed successfully for user {request.UserId}");
 
             _productService.UpdateProductsAvailability(updatedProducts);
             _logger.LogInformation($"Products availability updated based on this order");
 
-            _cartService.Clear(userId);
-            _logger.LogInformation($"Cart successfully cleared for user {userId} after placing order.");
+            _cartService.Clear(request.UserId);
+            _logger.LogInformation($"Cart successfully cleared for user {request.UserId} after placing order.");
 
             return orderId;
+        }
+
+        private IEnumerable<ProductSlim> ValidateUsingLatestProductData(IEnumerable<ProductSlim> products)
+        {
+            var productList = _productService.GetAll();
+
+            // Updates MaxAvailable value, based on latest product list.
+            var updatedProducts = Enumerable.Empty<ProductSlim>();
+            foreach (var product in products)
+            {
+                var latestProduct = productList.First(p => p.Code == product.Code);
+
+                var updatedProduct = new ProductSlim(product.Code, product.Price, latestProduct.MaxAvailable, product.Quantity);
+                updatedProducts = updatedProducts.Append(updatedProduct);
+            }
+
+            // Validates the request using custom validator.
+            var productSlimsValidator = new ProductSlimsValidator();
+            var validationResult = productSlimsValidator.Validate(updatedProducts);
+            if (!validationResult.IsValid)
+                throw new ArgumentException(validationResult.ToString("~"));
+
+            return updatedProducts;
         }
     }
 }

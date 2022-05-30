@@ -42,7 +42,7 @@ describe('ProductListComponent', () => {
       { code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, maxAvailable: 100, quantity: 0 }
     ];
     const cart: Cart = {
-      products: [{ code: 'milk', description: 'desc', imageUrl: 'url', price: 1.5, maxAvailable: 100, quantity: 3 }],
+      products: [{ code: 'milk', price: 1.5, maxAvailable: 100, quantity: 3 }],
       shippingCost: 10,
       total: 1.5
     };

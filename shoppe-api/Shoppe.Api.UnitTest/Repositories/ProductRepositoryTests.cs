@@ -29,8 +29,8 @@ namespace Shoppe.Api.UnitTest.Repositories
                 .Append(new Product("bread", "Bread 750g", "bread.jpg", 5.0f, 100, 1))
                 .Append(new Product("bun", "Buns 4 Pack", "brioche_burger_bun.jpg", 6.0f, 100, 2));
 
-            var latestProducts = Enumerable.Empty<Product>()
-                .Append(new Product("biscuit", "Biscuit 500g", "biscuit.jpg", 4.5f, 40));
+            var latestProducts = Enumerable.Empty<ProductSlim>()
+                .Append(new ProductSlim("biscuit", 4.5f, 40));
 
             var expectedProducts = Enumerable.Empty<Product>()
                 .Append(new Product("biscuit", "Biscuit 500g", "biscuit.jpg", 4.5f, 40, 0))

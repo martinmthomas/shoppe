@@ -17,7 +17,7 @@ namespace Shoppe.Api.Repositories
         /// Updates products availability.
         /// </summary>
         /// <param name="latestProducts"></param>
-        void UpdateProductsAvailability(IEnumerable<Product> latestProducts);
+        void UpdateProductsAvailability(IEnumerable<ProductSlim> latestProducts);
     }
 
     public class ProductRepository : IProductRepository
@@ -39,7 +39,7 @@ namespace Shoppe.Api.Repositories
             return _cache.Get<IEnumerable<Product>>(_productListKey);
         }
 
-        public void UpdateProductsAvailability(IEnumerable<Product> latestProducts)
+        public void UpdateProductsAvailability(IEnumerable<ProductSlim> latestProducts)
         {
             var products = GetAll();
 
@@ -49,6 +49,7 @@ namespace Shoppe.Api.Repositories
                 if (latestProducts.Any(p => p.Code == product.Code))
                 {
                     var latestProduct = latestProducts.First(p => p.Code == product.Code);
+
                     var max = latestProduct.MaxAvailable - latestProduct.Quantity;
                     updatedProducts = updatedProducts.Append(new Product(product.Code, product.Description, product.ImageUrl, product.Price, max));
                 }
@@ -71,7 +72,8 @@ namespace Shoppe.Api.Repositories
                     .Append(new Product("brioche_bun_1", "Brioche Gourmet Burger Buns 4 Pack", $"{_coreSettings.AssetsUrl}brioche_burger_bun.jpg", 6.0f, 100))
                     .Append(new Product("a2_milk_2", "A2 Full cream milk 2L", $"{_coreSettings.AssetsUrl}milk.jpg", 3.5f, 200))
                     .Append(new Product("bega_peanut_1", "Bega Peanut Butter Crunchy 780g", $"{_coreSettings.AssetsUrl}peanut_butter.jpg", 5.5f, 500));
-                _cache.Set(_productListKey, productList);
+
+                _cache.Set(_productListKey, productList, TimeSpan.FromMinutes(15));
             }
         }
     }

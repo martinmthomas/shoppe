@@ -1,7 +1,12 @@
-import { Product } from "./product";
+import { Product, ProductSlim } from "./product";
 
 export interface Cart {
-    products: Product[];
+    products: ProductSlim[];
     shippingCost: number;
     total: number;
+}
+
+export interface CartUpdateRequest {
+    userId: string;
+    products: ProductSlim[];
 }

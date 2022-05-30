@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { Product } from '../models/product';
+import { PlaceOrderRequest } from '../models/order';
+import { ProductSlim } from '../models/product';
 import { CartService } from './cart.service';
 import { UserService } from './user.service';
 
@@ -21,8 +22,13 @@ export class OrderService {
     private userService: UserService,
     private cartService: CartService) { }
 
-  placeOrder(products: Product[]): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/order/${this.userId}`, products)
+  placeOrder(products: ProductSlim[]): Observable<any> {
+    const request: PlaceOrderRequest = {
+      userId: this.userId,
+      products: products
+    };
+
+    return this.http.post<any>(`${this.baseUrl}/order`, request)
       .pipe(
         switchMap(orderResult => {
           this.cartService.clear();

@@ -18,13 +18,12 @@ namespace Shoppe.Api.Controllers
         /// <summary>
         /// Places an order.
         /// </summary>
-        /// <param name="userId">User Id</param>
-        /// <param name="products">List of products to be purchased</param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost("{userId}")]
-        public IActionResult PlaceOrder([FromRoute] Guid userId, [FromBody] IEnumerable<Product> products)
+        [HttpPost()]
+        public IActionResult PlaceOrder(PlaceOrderRequest request)
         {
-            var orderId = _orderService.PlaceOrder(userId, products);
+            var orderId = _orderService.PlaceOrder(request);
             return Ok(new { OrderId = orderId });
         }
     }

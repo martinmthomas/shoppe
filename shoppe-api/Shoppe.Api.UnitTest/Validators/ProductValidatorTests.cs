@@ -1,5 +1,5 @@
 ﻿using Shoppe.Api.Models;
-using Shoppe.Api.Models.Validators;
+using Shoppe.Api.Validators;
 using System.Linq;
 using Xunit;
 
@@ -8,14 +8,15 @@ namespace Shoppe.Api.UnitTest.Validators
     public class ProductValidatorTests
     {
         [Theory]
-        [InlineData("", "Milk Desc", "image path", 23, 0)]
-        [InlineData("Milk", "Milk Desc", "image path", -3, 3)]
-        [InlineData("Milk", "Milk Desc", "image path", 5, -3)]
-        [InlineData("Milk", "Milk Desc", "image path", 5, 0, true)]
-        public void ProductValidator_Fails_On_Invalid_Input(string code, string description, string imageUrl, float price, int qty, bool shouldPass = false)
+        [InlineData("", "Milk Desc", "image path", 23, 10, 0, false)]
+        [InlineData("Milk", "Milk Desc", "image path", -3, 10, 3, false)]
+        [InlineData("Milk", "Milk Desc", "image path", 5, 10, -3, false)]
+        [InlineData("Milk", "Milk Desc", "image path", 5, 10, 20, false)]
+        [InlineData("Milk", "Milk Desc", "image path", 5, 10, 0, true)]
+        public void ProductValidator_Fails_On_Invalid_Input(string code, string description, string imageUrl, float price, int maxAvailable, int qty, bool shouldPass = false)
         {
             // Arrange
-            var product = new Product(code, description, imageUrl, price, qty);
+            var product = new Product(code, description, imageUrl, price, maxAvailable, qty);
 
             // Act
             var validator = new ProductValidator();
