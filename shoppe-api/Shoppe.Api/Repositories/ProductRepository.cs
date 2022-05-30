@@ -26,6 +26,7 @@ namespace Shoppe.Api.Repositories
         private readonly IMemoryCache _cache;
 
         private const string _productListKey = "PRODUCT_LIST";
+        private TimeSpan _cacheExpiresInMinutes => TimeSpan.FromMinutes(5);
 
         public ProductRepository(IOptions<CoreSettings> options, IMemoryCache cache)
         {
@@ -36,6 +37,15 @@ namespace Shoppe.Api.Repositories
 
         public IEnumerable<Product> GetAll()
         {
+            var products = _cache.Get<IEnumerable<Product>>(_productListKey);
+            if (products != null && products.Any())
+            {
+                return products;
+            }
+
+            // Cache has an expiry so that we can test the products without issues.
+            // This logic here allows the cache to be reloaded if the contents expire.
+            LoadProductList();
             return _cache.Get<IEnumerable<Product>>(_productListKey);
         }
 
@@ -59,7 +69,7 @@ namespace Shoppe.Api.Repositories
                 }
             }
 
-            _cache.Set(_productListKey, updatedProducts);
+            _cache.Set(_productListKey, updatedProducts, _cacheExpiresInMinutes);
         }
 
         private void LoadProductList()
@@ -73,7 +83,7 @@ namespace Shoppe.Api.Repositories
                     .Append(new Product("a2_milk_2", "A2 Full cream milk 2L", $"{_coreSettings.AssetsUrl}milk.jpg", 3.5f, 200))
                     .Append(new Product("bega_peanut_1", "Bega Peanut Butter Crunchy 780g", $"{_coreSettings.AssetsUrl}peanut_butter.jpg", 5.5f, 500));
 
-                _cache.Set(_productListKey, productList, TimeSpan.FromMinutes(15));
+                _cache.Set(_productListKey, productList, _cacheExpiresInMinutes);
             }
         }
     }
